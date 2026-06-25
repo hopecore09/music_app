@@ -1,9 +1,7 @@
 import fs from 'fs/promises';
-import { fileURLToPath } from 'url';
 import path from 'path';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.join(__dirname, '../../data');
+const DATA_DIR = path.join(process.cwd(), 'data');
 const cache = {};
 
 export async function loadJSON(file) {
