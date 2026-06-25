@@ -1,0 +1,10 @@
+{
+  "server": { "port": 3000 },
+  "api": {
+    "pageSize": 20,
+    "defaultSeed": 12345,
+    "defaultLocale": "en",
+    "defaultLikes": 5,
+    "defaultReviews": 3
+  }
+}
