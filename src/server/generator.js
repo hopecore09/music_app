@@ -6,21 +6,6 @@ import { generateMidi } from './midi.js';
 
 const cache = new Map();
 
-const SONG_TITLES = {
-  en: [
-    'Midnight Dreams', 'Ocean Waves', 'Starlight', 'Echoes', 'Whispers',
-    'Golden Hour', 'Silent Night', 'Fading Light', 'New Dawn', 'Endless Love',
-    'Heartbeat', 'Rising Sun', 'Lost in Time', 'Free Spirit', 'Wild Heart',
-    'Inner Peace', 'Brave Heart', 'Eternal Flame', 'Secret Garden', 'Moonlight'
-  ],
-  de: [
-    'Mitternachtstraum', 'Meereswellen', 'Sternenlicht', 'Echos', 'Flüstern',
-    'Goldene Stunde', 'Stille Nacht', 'Verblassendes Licht', 'Neue Morgenröte', 'Endlose Liebe',
-    'Herzschlag', 'Aufgehende Sonne', 'Verloren in der Zeit', 'Freier Geist', 'Wildes Herz',
-    'Innerer Frieden', 'Tapferes Herz', 'Ewige Flamme', 'Geheimer Garten', 'Mondlicht'
-  ]
-};
-
 const REVIEW_TEMPLATES = {
   en: [
     'This {adj} track by {artist} is {adv} amazing!',
@@ -79,7 +64,6 @@ export class SongGenerator {
   async getContent(seed) {
     const key = `${seed}-${this.locale}`;
     if (cache.has(key)) return cache.get(key);
-    
     const localeHash = this.locale.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
     const localeSeed = seed + localeHash;
     const rng = seedrandom(localeSeed.toString());
@@ -90,8 +74,7 @@ export class SongGenerator {
     
     faker.seed(Math.floor(rng() * 1000000));
     
-    const titles = SONG_TITLES[this.locale] || SONG_TITLES.en;
-    const title = titles[Math.floor(rng() * titles.length)];
+    const title = faker.music.songName();
     const artist = rng() < 0.5 ? faker.company.name() : faker.person.fullName();
     const album = rng() < 0.3 ? 'Single' : `${faker.word.adjective()} ${faker.word.noun()}`;
     const genre = pickRandom(genres, rng);
@@ -120,7 +103,7 @@ export class SongGenerator {
         adj2: faker.word.adjective,
         adv: faker.word.adverb,
         artist: faker.person.fullName,
-        song: SONG_TITLES[this.locale]?.[Math.floor(wr() * 20)] || 'Song',
+        song: faker.music.songName,
         noun1: faker.word.noun,
         noun2: faker.word.noun,
         emotion: faker.word.noun,
