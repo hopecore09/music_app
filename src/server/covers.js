@@ -47,9 +47,14 @@ function getText(title, artist) {
   const as = Math.min(22, 350 / (artist.length / 2 + 1));
   
   return `
+    <style>
+      .t { font-family: system-ui, -apple-system, sans-serif; }
+      .title { font-weight: 700; fill: #ffffff; }
+      .artist { font-weight: 300; fill: rgba(255,255,255,0.9); }
+    </style>
     <rect x="40" y="130" width="320" height="120" rx="12" fill="rgba(0,0,0,0.4)"/>
-    <text x="200" y="180" text-anchor="middle" font-family="sans-serif" font-size="${ts}" font-weight="700" fill="#ffffff">${esc(title)}</text>
-    <text x="200" y="235" text-anchor="middle" font-family="sans-serif" font-size="${as}" font-weight="300" fill="rgba(255,255,255,0.9)">${esc(artist)}</text>
+    <text x="200" y="180" text-anchor="middle" class="t title" font-size="${ts}">${esc(title)}</text>
+    <text x="200" y="235" text-anchor="middle" class="t artist" font-size="${as}">${esc(artist)}</text>
   `;
 }
 
