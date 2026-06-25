@@ -45,9 +45,11 @@ function getShape(rng, colors) {
 function getText(title, artist) {
   const ts = Math.min(40, 350 / (title.length / 2 + 1));
   const as = Math.min(26, 350 / (artist.length / 2 + 1));
+  
   return `
-    <text x="200" y="180" text-anchor="middle" font-family="sans-serif" font-size="${ts}" font-weight="700" fill="#ffffff" stroke="rgba(0,0,0,0.4)" stroke-width="3">${esc(title)}</text>
-    <text x="200" y="240" text-anchor="middle" font-family="sans-serif" font-size="${as}" font-weight="300" fill="rgba(255,255,255,0.9)">${esc(artist)}</text>
+    <text x="200" y="180" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="${ts}" font-weight="700" fill="#ffffff" stroke="rgba(0,0,0,0.5)" stroke-width="4">${esc(title)}</text>
+    <text x="200" y="235" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="${as}" font-weight="300" fill="rgba(255,255,255,0.9)" stroke="rgba(0,0,0,0.3)" stroke-width="2">${esc(artist)}</text>
+    <line x1="120" y1="270" x2="280" y2="270" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
   `;
 }
 
