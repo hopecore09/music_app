@@ -1,19 +1,18 @@
 import sharp from 'sharp';
 import seedrandom from 'seedrandom';
 
-export async function generateCover(seed, { title, artist }) {
+export async function generateCover(seed) {
   const rng = seedrandom(seed.toString());
   const h = rng() * 360;
-  const svg = buildSvg(rng, title, artist, h);
+  const svg = buildSvg(rng, h);
   const buffer = await sharp(Buffer.from(svg)).png().toBuffer();
   return buffer.toString('base64');
 }
 
-function buildSvg(rng, title, artist, h) {
+function buildSvg(rng, h) {
   const colors = getColors(h);
   const shapes = getShapes(rng, colors);
-  const text = getText(title, artist);
-  return wrapSvg(colors, shapes, text);
+  return wrapSvg(colors, shapes);
 }
 
 function getColors(h) {
@@ -42,23 +41,7 @@ function getShape(rng, colors) {
   return `<rect x="${x-size/2}" y="${y-size/2}" width="${size}" height="${size*(0.3+rng()*0.7)}" fill="${c}" opacity="${o}" transform="rotate(${rng()*360},${x},${y})" rx="${5+rng()*15}"/>`;
 }
 
-function getText(title, artist) {
-  const ts = Math.min(36, 350 / (title.length / 2 + 1));
-  const as = Math.min(22, 350 / (artist.length / 2 + 1));
-  
-  return `
-    <style>
-      .t { font-family: system-ui, -apple-system, sans-serif; }
-      .title { font-weight: 700; fill: #ffffff; }
-      .artist { font-weight: 300; fill: rgba(255,255,255,0.9); }
-    </style>
-    <rect x="40" y="130" width="320" height="120" rx="12" fill="rgba(0,0,0,0.4)"/>
-    <text x="200" y="180" text-anchor="middle" class="t title" font-size="${ts}">${esc(title)}</text>
-    <text x="200" y="235" text-anchor="middle" class="t artist" font-size="${as}">${esc(artist)}</text>
-  `;
-}
-
-function wrapSvg(colors, shapes, text) {
+function wrapSvg(colors, shapes) {
   return `<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="${colors[0]}"/>
@@ -67,10 +50,5 @@ function wrapSvg(colors, shapes, text) {
     </linearGradient></defs>
     <rect width="400" height="400" fill="url(#g)"/>
     ${shapes}
-    ${text}
   </svg>`;
-}
-
-function esc(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
