@@ -23,7 +23,13 @@ function renderTable() {
       html += `<tr><td colspan="5" class="p-0">
         <div class="p-3 bg-light"><div class="row">
           <div class="col-md-4 text-center">
-            <img src="data:image/png;base64,${s.cover}" class="img-fluid rounded" style="max-width:250px; width:100%;" alt="${s.title}">
+            <div style="position:relative; display:inline-block;">
+              <img src="data:image/png;base64,${s.cover}" class="img-fluid rounded" style="max-width:250px; width:100%;" alt="${s.title}">
+              <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(0,0,0,0.7)); padding:20px 10px 15px; border-radius:0 0 8px 8px;">
+                <div style="color:white; font-weight:bold; font-size:18px; text-shadow:0 2px 4px rgba(0,0,0,0.5);">${s.title}</div>
+                <div style="color:rgba(255,255,255,0.8); font-size:14px; text-shadow:0 1px 2px rgba(0,0,0,0.5);">${s.artist}</div>
+              </div>
+            </div>
           </div>
           <div class="col-md-8">
             <h3>${s.title}</h3>
@@ -65,7 +71,7 @@ function renderGallery() {
   els.tableViewBtn.className = 'btn btn-outline-primary';
   els.galleryViewBtn.className = 'btn btn-primary active';
   
- if (state.page === 1) {
+  if (state.page === 1) {
     els.galleryGrid.innerHTML = '';
     appendGalleryItems(state.songs);
   }
@@ -77,10 +83,14 @@ export function appendGalleryItems(songs) {
   const html = songs.map(s => `
     <div class="col">
       <div class="card h-100 shadow-sm gallery-card" style="cursor:pointer;border-radius:12px;overflow:hidden;" data-id="${s.id}">
-        <img src="data:image/png;base64,${s.cover}" class="card-img-top" style="height:200px;object-fit:cover;" alt="${s.title}">
+        <div style="position:relative;">
+          <img src="data:image/png;base64,${s.cover}" class="card-img-top" style="height:200px;object-fit:cover;" alt="${s.title}">
+          <div style="position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent, rgba(0,0,0,0.7)); padding:12px 10px 10px;">
+            <div style="color:white; font-weight:bold; font-size:14px; text-shadow:0 1px 3px rgba(0,0,0,0.6);">${s.title}</div>
+            <div style="color:rgba(255,255,255,0.8); font-size:12px; text-shadow:0 1px 2px rgba(0,0,0,0.5);">${s.artist}</div>
+          </div>
+        </div>
         <div class="card-body" style="padding:12px;">
-          <h6 class="card-title text-truncate" style="font-size:14px;font-weight:600;margin-bottom:4px;">${s.title}</h6>
-          <p class="card-text small text-secondary" style="margin-bottom:4px;">${s.artist}</p>
           <span class="badge bg-secondary" style="font-size:11px;">${s.genre}</span>
         </div>
       </div>
