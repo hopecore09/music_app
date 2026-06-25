@@ -47,7 +47,8 @@ export class SongGenerator {
   }
   
   async getSong(index) {
-    const seed = this.baseSeed + index;
+    const localeHash = this.locale.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    const seed = this.baseSeed + index + localeHash;
     const song = await this.getContent(seed);
     
     const likesRng = seedrandom(`${seed}-likes`);
@@ -64,10 +65,8 @@ export class SongGenerator {
   async getContent(seed) {
     const key = `${seed}-${this.locale}`;
     if (cache.has(key)) return cache.get(key);
-    const localeHash = this.locale.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-    const localeSeed = seed + localeHash;
-    const rng = seedrandom(localeSeed.toString());
     
+    const rng = seedrandom(seed.toString());
     const locales = await loadLocales();
     const genres = await loadGenres();
     const cfg = locales[this.locale] || locales.en;
